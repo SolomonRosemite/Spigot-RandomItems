@@ -1,0 +1,5 @@
+name: RandomItems
+version: ${project.version}
+main: com.rosemite.RandomItems
+api-version: 1.16
+authors: [ SolomonRosemite ]
