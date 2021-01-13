@@ -1,0 +1,77 @@
+package com.rosemite.listener;
+
+import com.google.gson.Gson;
+import com.rosemite.RandomItems;
+import com.rosemite.helper.Log;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.AbstractMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+
+public class ItemsListener implements Listener {
+
+    private final Map<Material, Material> blockMap;
+
+    public ItemsListener(Map<Material, Material> blockMap) {
+        this.blockMap = blockMap;
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        Block block = event.getBlock();
+
+        if (!block.getBlockData().getMaterial().name().toLowerCase().contains("shulker")) {
+            dropItem(block.getBlockData().getMaterial(), block.getLocation());
+
+            event.getBlock().setType(Material.AIR);
+            event.setDropItems(false);
+            event.setCancelled(true);
+        }
+    }
+
+    private void dropItem(Material m, Location location) {
+        Material material = blockMap.get(m);
+
+        try {
+            Objects.requireNonNull(location.getWorld()).dropItemNaturally(location, new ItemStack(material));
+            for (int i = 0; i < RandomItems.foundItems.size(); i++) {
+                Map.Entry<Material, Material> val = RandomItems.foundItems.get(i);
+                if (val.getKey() == m && val.getValue() == material) {
+                    return;
+                }
+            }
+
+            addItem(m, material);
+        } catch (Exception ignored) {
+            dropItem(material, location);
+        }
+    }
+
+    private void addItem(Material m, Material material) {
+        AbstractMap.SimpleEntry entry = new AbstractMap.SimpleEntry(m, material);
+        RandomItems.foundItems.add(entry);
+
+        String filename = "RandomItems Config FoundItems.json";
+
+        try {
+            FileWriter myWriter = new FileWriter(filename);
+
+            myWriter.write(new Gson().toJson(RandomItems.foundItems));
+            myWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
