@@ -34,7 +34,7 @@ public class ItemsCommand implements CommandExecutor {
                    for (int i = 0; i < RandomItems.foundItems.size(); i++) {
                        if (RandomItems.foundItems.get(i).getValue() == material) {
                            found = true;
-                           p.sendMessage(logMaterial(RandomItems.foundItems.get(i).getKey(), material));
+                           p.sendMessage(logMaterial(material, RandomItems.foundItems.get(i).getKey()));
                            break;
                        }
                    }
