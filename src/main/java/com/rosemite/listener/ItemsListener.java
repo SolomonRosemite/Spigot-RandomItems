@@ -1,5 +1,6 @@
 package com.rosemite.listener;
 
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.rosemite.RandomItems;
 import com.rosemite.helper.Log;
@@ -16,8 +17,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.AbstractMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -82,7 +81,7 @@ public class ItemsListener implements Listener {
     }
 
     private void addItem(Material m, Material material) {
-        AbstractMap.SimpleEntry entry = new AbstractMap.SimpleEntry(m, material);
+        Map.Entry<Material, Material> entry = Maps.immutableEntry(m, material);
         RandomItems.foundItems.add(entry);
 
         String filename = "RandomItems Config FoundItems.json";

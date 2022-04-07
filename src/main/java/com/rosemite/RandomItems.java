@@ -7,6 +7,7 @@ import com.rosemite.commands.ItemsCommand;
 import com.rosemite.commands.SaveConfigCommand;
 import com.rosemite.helper.Log;
 import com.rosemite.listener.ItemsListener;
+import com.rosemite.models.ImportMapEntry;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,8 +15,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.stream.Collectors;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public final class RandomItems extends JavaPlugin {
     public static List<Map.Entry<Material, Material>> foundItems;
@@ -50,7 +51,7 @@ public final class RandomItems extends JavaPlugin {
         Map<Material, Material> values = getRandomsBlocksFromConfig();
 
         if (values != null)
-            return new AbstractMap.SimpleEntry(values, true);
+            return new AbstractMap.SimpleEntry<>(values, true);
 
         Material[] materials = Material.values();
         Map<Material, Material> map = new HashMap<>();
@@ -64,7 +65,7 @@ public final class RandomItems extends JavaPlugin {
             availableMaterials.remove(index);
         }
 
-        return new AbstractMap.SimpleEntry(map, false);
+        return new AbstractMap.SimpleEntry<>(map, true);
     }
 
     private Map<Material, Material> getRandomsBlocksFromConfig() {
@@ -103,8 +104,8 @@ public final class RandomItems extends JavaPlugin {
             return null;
         }
 
-        Type listType = new TypeToken<ArrayList<AbstractMap.SimpleEntry<String, String>>>(){}.getType();
-        List<AbstractMap.SimpleEntry<String, String>> list = new Gson().fromJson(content, listType);
+        Type listType = new TypeToken<ArrayList<ImportMapEntry<String, String>>>(){}.getType();
+        List<ImportMapEntry<String, String>> list = new Gson().fromJson(content, listType);
         List<Map.Entry<Material, Material>> materialList = new ArrayList<>();
 
         list.forEach((entry) -> {
