@@ -33,8 +33,9 @@ public class ItemsListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         Block block = event.getBlock();
         boolean hasSilkTouch = event.getPlayer().getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH);
+        String blockName = block.getBlockData().getMaterial().name().toLowerCase();
 
-        if (hasSilkTouch || block.getBlockData().getMaterial().name().toLowerCase().contains("shulker")) {
+        if (hasSilkTouch || blockName.contains("shulker") || blockName.contains("chest")) {
             return;
         }
 
