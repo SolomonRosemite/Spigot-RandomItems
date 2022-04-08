@@ -2,6 +2,12 @@ package com.rosemite.models;
 import java.util.Map;
 
 public class ImportMapEntry<K, V> implements Map.Entry<K, V> {
+    public ImportMapEntry() {}
+    public ImportMapEntry(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+
     public K key;
     private V value;
 

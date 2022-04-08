@@ -3,6 +3,7 @@ package com.rosemite.listener;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.rosemite.RandomItems;
+import com.rosemite.common.Common;
 import com.rosemite.helper.Log;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -84,15 +85,6 @@ public class ItemsListener implements Listener {
         Map.Entry<Material, Material> entry = Maps.immutableEntry(m, material);
         RandomItems.foundItems.add(entry);
 
-        String filename = "RandomItems Config FoundItems.json";
-
-        try {
-            FileWriter myWriter = new FileWriter(filename);
-
-            myWriter.write(new Gson().toJson(RandomItems.foundItems));
-            myWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Common.saveRandomItemsConfigFoundItems(RandomItems.foundItems);
     }
 }
